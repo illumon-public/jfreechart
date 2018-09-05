@@ -88,6 +88,8 @@ public class XYItemRendererState extends RendererState {
      */
     private boolean processVisibleItemsOnly;
 
+    private XYDataset dataset;
+
     /**
      * Creates a new state.
      *
@@ -97,6 +99,14 @@ public class XYItemRendererState extends RendererState {
         super(info);
         this.workingLine = new Line2D.Double();
         this.processVisibleItemsOnly = true;
+    }
+
+    public XYDataset getDataset() {
+        return dataset;
+    }
+
+    public void setDataset(XYDataset dataset) {
+        this.dataset = dataset;
     }
 
     /**

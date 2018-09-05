@@ -3883,6 +3883,10 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
             CategoryItemRendererState state = renderer.initialise(g2, dataArea,
                     this, index, info);
             state.setCrosshairState(crosshairState);
+
+            final CategoryDataset stateDataset = state.getDataset();
+            currentDataset = stateDataset == null ? currentDataset : stateDataset;
+
             int columnCount = currentDataset.getColumnCount();
             int rowCount = currentDataset.getRowCount();
             int passCount = renderer.getPassCount();
