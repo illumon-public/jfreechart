@@ -183,8 +183,8 @@ public class SamplingXYLineRenderer extends AbstractXYItemRenderer
          *
          * @param info  the plot rendering info.
          */
-        public State(PlotRenderingInfo info) {
-            super(info);
+        public State(PlotRenderingInfo info, XYDataset dataset) {
+            super(info, dataset);
         }
 
         /**
@@ -236,7 +236,7 @@ public class SamplingXYLineRenderer extends AbstractXYItemRenderer
     //        if (dpiVal != null) {
     //            dpi = dpiVal.intValue();
     //        }
-        State state = new State(info);
+        State state = new State(info, data);
         state.seriesPath = new GeneralPath();
         state.intervalPath = new GeneralPath();
         state.dX = 72.0 / dpi;

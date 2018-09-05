@@ -794,8 +794,8 @@ public class XYLineAndShapeRenderer extends AbstractXYItemRenderer
          *
          * @param info  the plot rendering info.
          */
-        public State(PlotRenderingInfo info) {
-            super(info);
+        public State(PlotRenderingInfo info, XYDataset dataset) {
+            super(info, dataset);
             this.seriesPath = new GeneralPath();
         }
 
@@ -860,7 +860,7 @@ public class XYLineAndShapeRenderer extends AbstractXYItemRenderer
     @Override
     public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea,
             XYPlot plot, XYDataset data, PlotRenderingInfo info) {
-        return new State(info);
+        return new State(info, data);
     }
 
     /**

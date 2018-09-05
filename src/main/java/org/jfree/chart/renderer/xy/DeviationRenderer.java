@@ -101,8 +101,8 @@ public class DeviationRenderer extends XYLineAndShapeRenderer {
          *
          * @param info  the plot rendering info.
          */
-        public State(PlotRenderingInfo info) {
-            super(info);
+        public State(PlotRenderingInfo info, XYDataset dataset) {
+            super(info, dataset);
             this.lowerCoordinates = new java.util.ArrayList();
             this.upperCoordinates = new java.util.ArrayList();
         }
@@ -200,7 +200,7 @@ public class DeviationRenderer extends XYLineAndShapeRenderer {
     @Override
     public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea,
             XYPlot plot, XYDataset dataset, PlotRenderingInfo info) {
-        State state = new State(info);
+        State state = new State(info, dataset);
         state.seriesPath = new GeneralPath();
         state.setProcessVisibleItemsOnly(false);
         return state;

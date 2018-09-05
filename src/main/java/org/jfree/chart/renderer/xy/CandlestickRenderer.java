@@ -621,7 +621,7 @@ public class CandlestickRenderer extends AbstractXYItemRenderer
             }
         }
 
-        return new XYItemRendererState(info);
+        return new XYItemRendererState(info, dataset);
     }
 
     /**

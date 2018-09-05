@@ -148,8 +148,8 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
          *
          * @param info  the plot rendering info.
          */
-        public StackedXYAreaRendererState(PlotRenderingInfo info) {
-            super(info);
+        public StackedXYAreaRendererState(PlotRenderingInfo info, XYDataset dataset) {
+            super(info, dataset);
             this.seriesArea = null;
             this.line = new Line2D.Double();
             this.lastSeriesPoints = new Stack();
@@ -331,7 +331,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
     public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea,
             XYPlot plot, XYDataset data, PlotRenderingInfo info) {
 
-        XYItemRendererState state = new StackedXYAreaRendererState(info);
+        XYItemRendererState state = new StackedXYAreaRendererState(info, data);
         // in the rendering process, there is special handling for item
         // zero, so we can't support processing of visible data items only
         state.setProcessVisibleItemsOnly(false);
