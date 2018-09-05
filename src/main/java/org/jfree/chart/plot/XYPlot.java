@@ -3716,7 +3716,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
                 return foundData;  // can't render anything without axes
             }
 
-            if(renderer == null) {
+            if(renderer == null || state == null) {
                 return foundData;
             }
 
