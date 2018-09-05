@@ -3696,6 +3696,18 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
 
         boolean foundData = false;
         XYDataset dataset = getDataset(index);
+
+        XYItemRenderer renderer = getRenderer(index);
+        XYItemRendererState state = null;
+        if (renderer == null) {
+            renderer = getRenderer();
+            if (renderer != null) { // default renderer available
+                state = renderer.initialise(g2, dataArea, this,
+                        dataset, info);
+                dataset = state.getDataset();
+            }
+        }
+
         if (!DatasetUtilities.isEmptyOrNull(dataset)) {
             foundData = true;
             ValueAxis xAxis = getDomainAxisForDataset(index);
@@ -3703,18 +3715,11 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
             if (xAxis == null || yAxis == null) {
                 return foundData;  // can't render anything without axes
             }
-            XYItemRenderer renderer = getRenderer(index);
-            if (renderer == null) {
-                renderer = getRenderer();
-                if (renderer == null) { // no default renderer available
-                    return foundData;
-                }
+
+            if(renderer == null) {
+                return foundData;
             }
 
-            XYItemRendererState state = renderer.initialise(g2, dataArea, this,
-                    dataset, info);
-            final XYDataset stateDataset = state.getDataset();
-            dataset = stateDataset == null ? dataset : stateDataset;
             int passCount = renderer.getPassCount();
 
             SeriesRenderingOrder seriesOrder = getSeriesRenderingOrder();

@@ -3876,16 +3876,22 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
         CategoryItemRenderer renderer = getRenderer(index);
         CategoryAxis domainAxis = getDomainAxisForDataset(index);
         ValueAxis rangeAxis = getRangeAxisForDataset(index);
-        boolean hasData = !DatasetUtilities.isEmptyOrNull(currentDataset);
-        if (hasData && renderer != null) {
 
-            foundData = true;
-            CategoryItemRendererState state = renderer.initialise(g2, dataArea,
+        CategoryItemRendererState state = null;
+        if(renderer != null) {
+            state = renderer.initialise(g2, dataArea,
                     this, index, info);
             state.setCrosshairState(crosshairState);
 
             final CategoryDataset stateDataset = state.getDataset();
-            currentDataset = stateDataset == null ? currentDataset : stateDataset;
+            if(stateDataset != null) {
+                currentDataset = stateDataset;
+            }
+        }
+
+        boolean hasData = !DatasetUtilities.isEmptyOrNull(currentDataset);
+        if (hasData && renderer != null) {
+            foundData = true;
 
             int columnCount = currentDataset.getColumnCount();
             int rowCount = currentDataset.getRowCount();

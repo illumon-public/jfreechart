@@ -73,26 +73,24 @@ public class CategoryItemRendererState extends RendererState {
      */
     private CategoryCrosshairState crosshairState;
 
-    private CategoryDataset dataset;
+    private final CategoryDataset dataset;
 
     /**
      * Creates a new object for recording temporary state information for a
      * renderer.
      *
      * @param info  the plot rendering info ({@code null} permitted).
+     * @param dataset  the data being plotted
      */
-    public CategoryItemRendererState(PlotRenderingInfo info) {
+    public CategoryItemRendererState(PlotRenderingInfo info, CategoryDataset dataset) {
         super(info);
+        this.dataset = dataset;
         this.barWidth = 0.0;
         this.seriesRunningTotal = 0.0;
     }
 
     public CategoryDataset getDataset() {
         return dataset;
-    }
-
-    public void setDataset(CategoryDataset dataset) {
-        this.dataset = dataset;
     }
 
     /**
