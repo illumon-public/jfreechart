@@ -3699,13 +3699,21 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
 
         XYItemRenderer renderer = getRenderer(index);
         XYItemRendererState state = null;
+
         if (renderer == null) {
-            renderer = getRenderer();
-            if (renderer != null) { // default renderer available
-                state = renderer.initialise(g2, dataArea, this,
-                        dataset, info);
-                dataset = state.getDataset();
+            renderer = getRenderer(); // default renderer available
+        }
+
+        if (renderer != null) {
+            state = renderer.initialise(g2, dataArea, this,
+                    dataset, info);
+
+            final XYDataset stateDataset = state.getDataset();
+            if(stateDataset != null) {
+                dataset = stateDataset;
             }
+        } else {
+            return !DatasetUtilities.isEmptyOrNull(dataset);
         }
 
         if (!DatasetUtilities.isEmptyOrNull(dataset)) {
