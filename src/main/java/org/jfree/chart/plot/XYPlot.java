@@ -3695,7 +3695,8 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
             PlotRenderingInfo info, CrosshairState crosshairState) {
 
         boolean foundData = false;
-        XYDataset dataset = getDataset(index);
+        XYDataset oldXYDataset = getDataset(index);
+        XYDataset dataset = oldXYDataset;
 
         XYItemRenderer renderer = getRenderer(index);
         XYItemRendererState state = null;
@@ -3711,6 +3712,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
             final XYDataset stateDataset = state.getDataset();
             if(stateDataset != null) {
                 dataset = stateDataset;
+                setDataset(index, dataset);
             }
         } else {
             return !DatasetUtilities.isEmptyOrNull(dataset);
@@ -3787,6 +3789,9 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
                 }
             }
         }
+
+        setDataset(index, oldXYDataset);
+
         return foundData;
     }
 
