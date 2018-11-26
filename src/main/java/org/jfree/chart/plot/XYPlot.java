@@ -1333,6 +1333,10 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
         return Plot.resolveRangeAxisLocation(location, this.orientation);
     }
 
+    public Map<Integer, XYDataset> getDatasets() {
+        return datasets;
+    }
+
     /**
      * Returns the primary dataset for the plot.
      *
@@ -1356,7 +1360,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
      * @see #setDataset(int, XYDataset)
      */
     public XYDataset getDataset(int index) {
-        return (XYDataset) this.datasets.get(index);
+        return (XYDataset) this.getDatasets().get(index);
     }
 
     /**
@@ -1386,7 +1390,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
         if (existing != null) {
             existing.removeChangeListener(this);
         }
-        this.datasets.put(index, dataset);
+        this.getDatasets().put(index, dataset);
         if (dataset != null) {
             dataset.addChangeListener(this);
         }
@@ -1402,7 +1406,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
      * @return The number of datasets.
      */
     public int getDatasetCount() {
-        return this.datasets.size();
+        return this.getDatasets().size();
     }
 
     /**
@@ -1414,7 +1418,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
      * @return The index or -1.
      */
     public int indexOf(XYDataset dataset) {
-        for (Map.Entry<Integer, XYDataset> entry: this.datasets.entrySet()) {
+        for (Map.Entry<Integer, XYDataset> entry: this.getDatasets().entrySet()) {
             if (dataset == entry.getValue()) {
                 return entry.getKey();
             }
@@ -3240,11 +3244,11 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
         }
 
         // draw the markers that are associated with a specific dataset...
-        for (XYDataset dataset: this.datasets.values()) {
+        for (XYDataset dataset: this.getDatasets().values()) {
             int datasetIndex = indexOf(dataset);
             drawDomainMarkers(g2, dataArea, datasetIndex, Layer.BACKGROUND);
         }
-        for (XYDataset dataset: this.datasets.values()) {
+        for (XYDataset dataset: this.getDatasets().values()) {
             int datasetIndex = indexOf(dataset);
             drawRangeMarkers(g2, dataArea, datasetIndex, Layer.BACKGROUND);
         }
@@ -3365,7 +3369,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
      */
     private List<Integer> getDatasetIndices(DatasetRenderingOrder order) {
         List<Integer> result = new ArrayList<Integer>();
-        for (Entry<Integer, XYDataset> entry : this.datasets.entrySet()) {
+        for (Entry<Integer, XYDataset> entry : this.getDatasets().entrySet()) {
             if (entry.getValue() != null) {
                 result.add(entry.getKey());
             }
@@ -4320,7 +4324,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
     private List<XYDataset> getDatasetsMappedToDomainAxis(Integer axisIndex) {
         ParamChecks.nullNotPermitted(axisIndex, "axisIndex");
         List<XYDataset> result = new ArrayList<XYDataset>();
-        for (Entry<Integer, XYDataset> entry : this.datasets.entrySet()) {
+        for (Entry<Integer, XYDataset> entry : this.getDatasets().entrySet()) {
             int index = entry.getKey();
             List<Integer> mappedAxes = this.datasetToDomainAxesMap.get(index);
             if (mappedAxes == null) {
@@ -4347,7 +4351,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
     private List<XYDataset> getDatasetsMappedToRangeAxis(Integer axisIndex) {
         ParamChecks.nullNotPermitted(axisIndex, "axisIndex");
         List<XYDataset> result = new ArrayList<XYDataset>();
-        for (Entry<Integer, XYDataset> entry : this.datasets.entrySet()) {
+        for (Entry<Integer, XYDataset> entry : this.getDatasets().entrySet()) {
             int index = entry.getKey();
             List<Integer> mappedAxes = this.datasetToRangeAxesMap.get(index);
             if (mappedAxes == null) {
@@ -5300,7 +5304,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
             return this.fixedLegendItems;
         }
         LegendItemCollection result = new LegendItemCollection();
-        for (XYDataset dataset : this.datasets.values()) {
+        for (XYDataset dataset : this.getDatasets().values()) {
             if (dataset == null) {
                 continue;
             }
@@ -5572,7 +5576,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
                 this.rangeAxisLocations);
 
         // the datasets are not cloned, but listeners need to be added...
-        clone.datasets = new HashMap<Integer, XYDataset>(this.datasets);
+        clone.datasets = new HashMap<Integer, XYDataset>(this.getDatasets());
         for (XYDataset dataset : clone.datasets.values()) {
             if (dataset != null) {
                 dataset.addChangeListener(clone);
@@ -5703,7 +5707,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
                 axis.addChangeListener(this);
             }
         }
-        for (XYDataset dataset : this.datasets.values()) {
+        for (XYDataset dataset : this.getDatasets().values()) {
             if (dataset != null) {
                 dataset.addChangeListener(this);
             }

@@ -1287,6 +1287,10 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
         }
     }
 
+    public Map<Integer, CategoryDataset> getDatasets() {
+        return datasets;
+    }
+
     /**
      * Returns the primary dataset for the plot.
      *
@@ -1309,7 +1313,7 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
      * @see #setDataset(int, CategoryDataset)
      */
     public CategoryDataset getDataset(int index) {
-        return this.datasets.get(index);
+        return this.getDatasets().get(index);
     }
 
     /**
@@ -1337,11 +1341,11 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
      * @see #getDataset(int)
      */
     public void setDataset(int index, CategoryDataset dataset) {
-        CategoryDataset existing = (CategoryDataset) this.datasets.get(index);
+        CategoryDataset existing = (CategoryDataset) this.getDatasets().get(index);
         if (existing != null) {
             existing.removeChangeListener(this);
         }
-        this.datasets.put(index, dataset);
+        this.getDatasets().put(index, dataset);
         if (dataset != null) {
             dataset.addChangeListener(this);
         }
@@ -1358,7 +1362,7 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
      * @since 1.0.2
      */
     public int getDatasetCount() {
-        return this.datasets.size();
+        return this.getDatasets().size();
     }
 
     /**
@@ -1372,7 +1376,7 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
      * @since 1.0.11
      */
     public int indexOf(CategoryDataset dataset) {
-        for (Entry<Integer, CategoryDataset> entry: this.datasets.entrySet()) {
+        for (Entry<Integer, CategoryDataset> entry: this.getDatasets().entrySet()) {
             if (entry.getValue() == dataset) {
                 return entry.getKey();
             }
@@ -2183,7 +2187,7 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
         }
         LegendItemCollection result = new LegendItemCollection();
         // get the legend items for the datasets...
-        for (CategoryDataset dataset: this.datasets.values()) {
+        for (CategoryDataset dataset: this.getDatasets().values()) {
             if (dataset != null) {
                 int datasetIndex = indexOf(dataset);
                 CategoryItemRenderer renderer = getRenderer(datasetIndex);
@@ -3708,7 +3712,7 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
     private List<Integer> getDatasetIndices(DatasetRenderingOrder order) {
         List<Integer> result = new ArrayList<Integer>();
         for (Map.Entry<Integer, CategoryDataset> entry : 
-                this.datasets.entrySet()) {
+                this.getDatasets().entrySet()) {
             if (entry.getValue() != null) {
                 result.add(entry.getKey());
             }
@@ -4311,7 +4315,7 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
      */
     private List<CategoryDataset> datasetsMappedToDomainAxis(int axisIndex) {
         List<CategoryDataset> result = new ArrayList<CategoryDataset>();
-        for (Entry<Integer, CategoryDataset> entry : this.datasets.entrySet()) {
+        for (Entry<Integer, CategoryDataset> entry : this.getDatasets().entrySet()) {
             CategoryDataset dataset = entry.getValue();
             if (dataset == null) {
                 continue;
@@ -4342,7 +4346,7 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
      */
     private List<CategoryDataset> datasetsMappedToRangeAxis(int axisIndex) {
         List<CategoryDataset> result = new ArrayList<CategoryDataset>();
-        for (Entry<Integer, CategoryDataset> entry : this.datasets.entrySet()) {
+        for (Entry<Integer, CategoryDataset> entry : this.getDatasets().entrySet()) {
             Integer datasetIndex = entry.getKey();
             CategoryDataset dataset = entry.getValue();
             List mappedAxes = (List) this.datasetToRangeAxesMap.get(
@@ -5022,7 +5026,7 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
         clone.rangeAxisLocations = new HashMap<Integer, AxisLocation>(
                 this.rangeAxisLocations);
 
-        clone.datasets = new HashMap<Integer, CategoryDataset>(this.datasets);
+        clone.datasets = new HashMap<Integer, CategoryDataset>(this.getDatasets());
         for (CategoryDataset dataset : clone.datasets.values()) {
             if (dataset != null) {
                 dataset.addChangeListener(clone);
@@ -5148,7 +5152,7 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
                 yAxis.addChangeListener(this);
             }
         }
-        for (CategoryDataset dataset : this.datasets.values()) {
+        for (CategoryDataset dataset : this.getDatasets().values()) {
             if (dataset != null) {
                 dataset.addChangeListener(this);
             }
