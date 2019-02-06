@@ -3699,29 +3699,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
             PlotRenderingInfo info, CrosshairState crosshairState) {
 
         boolean foundData = false;
-        XYDataset oldXYDataset = getDataset(index);
-        XYDataset dataset = oldXYDataset;
-
-        XYItemRenderer renderer = getRenderer(index);
-        XYItemRendererState state = null;
-
-        if (renderer == null) {
-            renderer = getRenderer(); // default renderer available
-        }
-
-        if (renderer != null) {
-            state = renderer.initialise(g2, dataArea, this,
-                    dataset, info);
-
-            final XYDataset stateDataset = state.getDataset();
-            if(stateDataset != null) {
-                dataset = stateDataset;
-                setDataset(index, dataset);
-            }
-        } else {
-            return !DatasetUtilities.isEmptyOrNull(dataset);
-        }
-
+        XYDataset dataset = getDataset(index);
         if (!DatasetUtilities.isEmptyOrNull(dataset)) {
             foundData = true;
             ValueAxis xAxis = getDomainAxisForDataset(index);
@@ -3729,11 +3707,16 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
             if (xAxis == null || yAxis == null) {
                 return foundData;  // can't render anything without axes
             }
-
-            if(renderer == null || state == null) {
-                return foundData;
+            XYItemRenderer renderer = getRenderer(index);
+            if (renderer == null) {
+                renderer = getRenderer();
+                if (renderer == null) { // no default renderer available
+                    return foundData;
+                }
             }
 
+            XYItemRendererState state = renderer.initialise(g2, dataArea, this,
+                    dataset, info);
             int passCount = renderer.getPassCount();
 
             SeriesRenderingOrder seriesOrder = getSeriesRenderingOrder();
@@ -3793,9 +3776,6 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
                 }
             }
         }
-
-        setDataset(index, oldXYDataset);
-
         return foundData;
     }
 

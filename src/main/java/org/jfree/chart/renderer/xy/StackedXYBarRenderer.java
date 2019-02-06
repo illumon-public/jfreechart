@@ -187,7 +187,7 @@ public class StackedXYBarRenderer extends XYBarRenderer {
     @Override
     public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea,
             XYPlot plot, XYDataset data, PlotRenderingInfo info) {
-        return new XYBarRendererState(info, data);
+        return new XYBarRendererState(info);
     }
 
     /**

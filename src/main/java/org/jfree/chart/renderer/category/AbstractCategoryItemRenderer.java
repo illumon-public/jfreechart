@@ -569,8 +569,8 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
      *
      * @since 1.0.5
      */
-    protected CategoryItemRendererState createState(PlotRenderingInfo info, CategoryDataset dataset) {
-        return new CategoryItemRendererState(info, dataset);
+    protected CategoryItemRendererState createState(PlotRenderingInfo info) {
+        return new CategoryItemRendererState(info);
     }
 
     /**
@@ -602,7 +602,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
             this.rowCount = 0;
             this.columnCount = 0;
         }
-        CategoryItemRendererState state = createState(info, data);
+        CategoryItemRendererState state = createState(info);
         state.setElementHinting(plot.fetchElementHintingFlag());
         int[] visibleSeriesTemp = new int[this.rowCount];
         int visibleSeriesCount = 0;

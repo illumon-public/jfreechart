@@ -154,8 +154,8 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
          *
          * @param info  the plot rendering info.
          */
-        public XYAreaRendererState(PlotRenderingInfo info, XYDataset dataset) {
-            super(info, dataset);
+        public XYAreaRendererState(PlotRenderingInfo info) {
+            super(info);
             this.area = new GeneralPath();
             this.line = new Line2D.Double();
         }
@@ -417,7 +417,7 @@ public class XYAreaRenderer extends AbstractXYItemRenderer
     @Override
     public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea,
             XYPlot plot, XYDataset data, PlotRenderingInfo info) {
-        XYAreaRendererState state = new XYAreaRendererState(info, data);
+        XYAreaRendererState state = new XYAreaRendererState(info);
 
         // in the rendering process, there is special handling for item
         // zero, so we can't support processing of visible data items only

@@ -113,8 +113,8 @@ public class XYSplineRenderer extends XYLineAndShapeRenderer {
          * 
          * @param info  the plot rendering info. 
          */
-        public XYSplineState(PlotRenderingInfo info, XYDataset dataset) {
-            super(info, dataset);
+        public XYSplineState(PlotRenderingInfo info) {
+            super(info);
             this.fillArea = new GeneralPath();
             this.points = new ArrayList<Point2D>();
         }
@@ -273,7 +273,7 @@ public class XYSplineRenderer extends XYLineAndShapeRenderer {
             XYPlot plot, XYDataset data, PlotRenderingInfo info) {
 
         setDrawSeriesLineAsPath(true);
-        XYSplineState state = new XYSplineState(info, data);
+        XYSplineState state = new XYSplineState(info);
         state.setProcessVisibleItemsOnly(false);
         return state;
     }

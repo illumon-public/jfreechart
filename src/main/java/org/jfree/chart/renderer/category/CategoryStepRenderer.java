@@ -99,8 +99,8 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
          * @param info  collects plot rendering information ({@code null}
          *              permitted).
          */
-        public State(PlotRenderingInfo info, CategoryDataset dataset) {
-            super(info, dataset);
+        public State(PlotRenderingInfo info) {
+            super(info);
             this.line = new Line2D.Double();
         }
 
@@ -220,8 +220,8 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
      * @return A new state instance.
      */
     @Override
-    protected CategoryItemRendererState createState(PlotRenderingInfo info, CategoryDataset dataset) {
-        return new State(info, dataset);
+    protected CategoryItemRendererState createState(PlotRenderingInfo info) {
+        return new State(info);
     }
 
     /**

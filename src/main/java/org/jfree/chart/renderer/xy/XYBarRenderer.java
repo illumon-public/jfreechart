@@ -232,8 +232,8 @@ public class XYBarRenderer extends AbstractXYItemRenderer
          *
          * @param info  the plot rendering info.
          */
-        public XYBarRendererState(PlotRenderingInfo info, XYDataset dataset) {
-            super(info, dataset);
+        public XYBarRendererState(PlotRenderingInfo info) {
+            super(info);
         }
 
         /**
@@ -712,7 +712,7 @@ public class XYBarRenderer extends AbstractXYItemRenderer
     public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea,
             XYPlot plot, XYDataset dataset, PlotRenderingInfo info) {
 
-        XYBarRendererState state = new XYBarRendererState(info, dataset);
+        XYBarRendererState state = new XYBarRendererState(info);
         ValueAxis rangeAxis = plot.getRangeAxisForDataset(plot.indexOf(
                 dataset));
         state.setG2Base(rangeAxis.valueToJava2D(this.base, dataArea,

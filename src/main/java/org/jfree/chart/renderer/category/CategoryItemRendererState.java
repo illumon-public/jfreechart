@@ -48,7 +48,6 @@ package org.jfree.chart.renderer.category;
 import org.jfree.chart.plot.CategoryCrosshairState;
 import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.renderer.RendererState;
-import org.jfree.data.category.CategoryDataset;
 
 /**
  * An object that retains temporary state information for a
@@ -73,24 +72,16 @@ public class CategoryItemRendererState extends RendererState {
      */
     private CategoryCrosshairState crosshairState;
 
-    private final CategoryDataset dataset;
-
     /**
      * Creates a new object for recording temporary state information for a
      * renderer.
      *
      * @param info  the plot rendering info ({@code null} permitted).
-     * @param dataset  the data being plotted
      */
-    public CategoryItemRendererState(PlotRenderingInfo info, CategoryDataset dataset) {
+    public CategoryItemRendererState(PlotRenderingInfo info) {
         super(info);
-        this.dataset = dataset;
         this.barWidth = 0.0;
         this.seriesRunningTotal = 0.0;
-    }
-
-    public CategoryDataset getDataset() {
-        return dataset;
     }
 
     /**

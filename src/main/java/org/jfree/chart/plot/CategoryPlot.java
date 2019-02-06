@@ -3876,31 +3876,17 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
             PlotRenderingInfo info, CategoryCrosshairState crosshairState) {
 
         boolean foundData = false;
-
-        CategoryDataset oldDataset = getDataset(index);
-        CategoryDataset currentDataset = oldDataset;
-
+        CategoryDataset currentDataset = getDataset(index);
         CategoryItemRenderer renderer = getRenderer(index);
         CategoryAxis domainAxis = getDomainAxisForDataset(index);
         ValueAxis rangeAxis = getRangeAxisForDataset(index);
-
-        CategoryItemRendererState state = null;
-        if(renderer != null) {
-            state = renderer.initialise(g2, dataArea,
-                    this, index, info);
-            state.setCrosshairState(crosshairState);
-
-            final CategoryDataset stateDataset = state.getDataset();
-            if(stateDataset != null) {
-                currentDataset = stateDataset;
-                setDataset(index, currentDataset);
-            }
-        }
-
         boolean hasData = !DatasetUtilities.isEmptyOrNull(currentDataset);
         if (hasData && renderer != null) {
-            foundData = true;
 
+            foundData = true;
+            CategoryItemRendererState state = renderer.initialise(g2, dataArea,
+                    this, index, info);
+            state.setCrosshairState(crosshairState);
             int columnCount = currentDataset.getColumnCount();
             int rowCount = currentDataset.getRowCount();
             int passCount = renderer.getPassCount();
@@ -3943,9 +3929,6 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
                 }
             }
         }
-
-        setDataset(index, oldDataset);
-
         return foundData;
 
     }

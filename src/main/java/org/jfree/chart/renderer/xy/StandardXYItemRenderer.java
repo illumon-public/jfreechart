@@ -712,8 +712,8 @@ public class StandardXYItemRenderer extends AbstractXYItemRenderer
          *
          * @param info  the plot rendering info.
          */
-        public State(PlotRenderingInfo info, XYDataset dataset) {
-            super(info, dataset);
+        public State(PlotRenderingInfo info) {
+            super(info);
         }
 
         /**
@@ -775,7 +775,7 @@ public class StandardXYItemRenderer extends AbstractXYItemRenderer
     public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea,
             XYPlot plot, XYDataset data, PlotRenderingInfo info) {
 
-        State state = new State(info, data);
+        State state = new State(info);
         state.seriesPath = new GeneralPath();
         state.seriesIndex = -1;
         return state;

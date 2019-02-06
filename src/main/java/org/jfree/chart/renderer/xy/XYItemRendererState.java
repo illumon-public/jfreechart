@@ -88,22 +88,15 @@ public class XYItemRendererState extends RendererState {
      */
     private boolean processVisibleItemsOnly;
 
-    private final XYDataset dataset;
-
     /**
      * Creates a new state.
      *
      * @param info  the plot rendering info.
      */
-    public XYItemRendererState(PlotRenderingInfo info, XYDataset dataset) {
+    public XYItemRendererState(PlotRenderingInfo info) {
         super(info);
-        this.dataset = dataset;
         this.workingLine = new Line2D.Double();
         this.processVisibleItemsOnly = true;
-    }
-
-    public XYDataset getDataset() {
-        return dataset;
     }
 
     /**
