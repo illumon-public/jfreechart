@@ -340,6 +340,9 @@ public class JFreeChart implements Drawable, TitleChangeListener,
     /** Storage for registered progress listeners. */
     private transient EventListenerList progressListeners;
 
+    /** Last value of our system property for anti-aliasing. */
+    private transient boolean systemLevelAntiAliasing;
+
     /**
      * A flag that can be used to enable/disable notification of chart change
      * events.
@@ -415,9 +418,11 @@ public class JFreeChart implements Drawable, TitleChangeListener,
         this.notify = true;  // default is to notify listeners when the
                              // chart changes
 
+        systemLevelAntiAliasing = getSystemAntiAlias();
+
         this.renderingHints = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+                systemLevelAntiAliasing ? RenderingHints.VALUE_ANTIALIAS_ON: RenderingHints.VALUE_ANTIALIAS_OFF);
         // added the following hint because of 
         // http://stackoverflow.com/questions/7785082/
         this.renderingHints.put(RenderingHints.KEY_STROKE_CONTROL,
@@ -1042,6 +1047,11 @@ public class JFreeChart implements Drawable, TitleChangeListener,
 
     }
 
+    private boolean getSystemAntiAlias() {
+        String chartsAntiAliasString = System.getProperty("chartsAntiAlias");
+        return chartsAntiAliasString == null || Boolean.parseBoolean(chartsAntiAliasString);
+    }
+
     /**
      * Returns the background image for the chart, or {@code null} if
      * there is no image.
@@ -1230,6 +1240,10 @@ public class JFreeChart implements Drawable, TitleChangeListener,
         Shape savedClip = g2.getClip();
         g2.clip(chartArea);
 
+        if (getSystemAntiAlias() != systemLevelAntiAliasing) {
+            systemLevelAntiAliasing = getSystemAntiAlias();
+            this.renderingHints.put(RenderingHints.KEY_ANTIALIASING, systemLevelAntiAliasing ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
+        }
         g2.addRenderingHints(this.renderingHints);
 
         // draw the chart background...
