@@ -71,7 +71,7 @@ import org.jfree.ui.PaintSample;
  * A panel for editing chart properties (includes subpanels for the title,
  * legend and plot).
  */
-class DefaultChartEditor extends JPanel implements ActionListener, ChartEditor {
+public class DefaultChartEditor extends JPanel implements ActionListener, ChartEditor {
 
     /** A panel for displaying/editing the properties of the title. */
     private DefaultTitleEditor titleEditor;

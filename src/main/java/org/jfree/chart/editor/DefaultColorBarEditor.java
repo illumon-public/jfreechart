@@ -70,7 +70,7 @@ import org.jfree.layout.LCBLayout;
  * A DefaultColorBarEditor.  Extends DefaultNumberAxisEditor to allow
  * change general axis type parameters.
  */
-class DefaultColorBarEditor extends DefaultNumberAxisEditor {
+public class DefaultColorBarEditor extends DefaultNumberAxisEditor {
 
     /**
      * A checkbox that indicates whether or not the color indices should run

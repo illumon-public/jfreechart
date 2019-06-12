@@ -74,7 +74,7 @@ import org.jfree.ui.RectangleInsets;
 /**
  * A panel for editing the properties of an axis.
  */
-class DefaultAxisEditor extends JPanel implements ActionListener {
+public class DefaultAxisEditor extends JPanel implements ActionListener {
 
     /** The axis label. */
     private JTextField label;

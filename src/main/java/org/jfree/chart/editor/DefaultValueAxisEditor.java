@@ -68,7 +68,7 @@ import org.jfree.ui.StrokeSample;
 /**
  * A panel for editing properties of a {@link ValueAxis}.
  */
-class DefaultValueAxisEditor extends DefaultAxisEditor
+public class DefaultValueAxisEditor extends DefaultAxisEditor
     implements FocusListener {
 
     /** A flag that indicates whether or not the axis range is determined

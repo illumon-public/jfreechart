@@ -72,7 +72,7 @@ import org.jfree.ui.PaintSample;
 /**
  * A panel for editing the properties of a chart title.
  */
-class DefaultTitleEditor extends JPanel implements ActionListener {
+public class DefaultTitleEditor extends JPanel implements ActionListener {
 
     /** Whether or not to display the title on the chart. */
     private boolean showTitle;

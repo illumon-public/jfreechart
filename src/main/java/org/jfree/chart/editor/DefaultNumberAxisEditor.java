@@ -61,7 +61,7 @@ import org.jfree.layout.LCBLayout;
 /**
  * A panel for editing the properties of a value axis.
  */
-class DefaultNumberAxisEditor extends DefaultValueAxisEditor
+public class DefaultNumberAxisEditor extends DefaultValueAxisEditor
     implements FocusListener {
 
     private double manualTickUnitValue;
