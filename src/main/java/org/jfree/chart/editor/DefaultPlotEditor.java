@@ -88,7 +88,7 @@ import org.jfree.util.BooleanUtilities;
 /**
  * A panel for editing the properties of a {@link Plot}.
  */
-class DefaultPlotEditor extends JPanel implements ActionListener {
+public class DefaultPlotEditor extends JPanel implements ActionListener {
 
     /** Orientation constants. */
     private final static String[] orientationNames = {"Vertical", "Horizontal"};
@@ -440,6 +440,28 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
     }
 
     /**
+     * Returns a reference to the panel for editing the properties of the
+     * color bar axis.
+     *
+     * @return A reference to a panel.
+     */
+    public DefaultAxisEditor getColorBarAxisPropertyEditPanel() {
+        return this.colorBarAxisPropertyPanel;
+    }
+
+    public PlotOrientation getPlotOrientation() {
+        return plotOrientation;
+    }
+
+    public Boolean getDrawLines() {
+        return drawLines;
+    }
+
+    public Boolean getDrawShapes() {
+        return drawShapes;
+    }
+
+    /**
      * Handles user actions generated within the panel.
      * @param event     the event
      */
@@ -575,7 +597,7 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
         plot.setInsets(getPlotInsets());
 
         // then the axis properties...
-        if (this.domainAxisPropertyPanel != null) {
+        if (this.getDomainAxisPropertyEditPanel() != null) {
             Axis domainAxis = null;
             if (plot instanceof CategoryPlot) {
                 CategoryPlot p = (CategoryPlot) plot;
@@ -586,11 +608,11 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
                 domainAxis = p.getDomainAxis();
             }
             if (domainAxis != null) {
-                this.domainAxisPropertyPanel.setAxisProperties(domainAxis);
+                this.getDomainAxisPropertyEditPanel().setAxisProperties(domainAxis);
             }
         }
 
-        if (this.rangeAxisPropertyPanel != null) {
+        if (this.getRangeAxisPropertyEditPanel() != null) {
             Axis rangeAxis = null;
             if (plot instanceof CategoryPlot) {
                 CategoryPlot p = (CategoryPlot) plot;
@@ -605,7 +627,7 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
                 rangeAxis = p.getAxis();
             }
             if (rangeAxis != null) {
-                this.rangeAxisPropertyPanel.setAxisProperties(rangeAxis);
+                this.getRangeAxisPropertyEditPanel().setAxisProperties(rangeAxis);
             }
         }
 
@@ -659,14 +681,14 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
         }
 
 //dmo: added this panel for colorbar control. (start dmo additions)
-        if (this.colorBarAxisPropertyPanel != null) {
+        if (this.getColorBarAxisPropertyEditPanel() != null) {
             ColorBar colorBar = null;
             if (plot instanceof  ContourPlot) {
                 ContourPlot p = (ContourPlot) plot;
                 colorBar = p.getColorBar();
             }
             if (colorBar != null) {
-                this.colorBarAxisPropertyPanel.setAxisProperties(colorBar);
+                ((DefaultColorBarEditor) getColorBarAxisPropertyEditPanel()).setAxisProperties(colorBar);
             }
         }
 //dmo: (end dmo additions)
