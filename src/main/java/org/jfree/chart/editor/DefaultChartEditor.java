@@ -215,10 +215,6 @@ public class DefaultChartEditor extends JPanel implements ActionListener, ChartE
         return this.plotEditor;
     }
 
-    public void setPlotEditor(final DefaultPlotEditor plotEditor) {
-        this.plotEditor = plotEditor;
-    }
-
     /**
      * Returns the current setting of the anti-alias flag.
      *

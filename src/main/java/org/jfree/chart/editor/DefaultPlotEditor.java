@@ -69,7 +69,6 @@ import javax.swing.JTabbedPane;
 
 import org.jfree.chart.axis.Axis;
 import org.jfree.chart.axis.ColorBar;
-import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.ContourPlot;
 import org.jfree.chart.plot.Plot;
@@ -425,28 +424,6 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
     }
 
     /**
-     * Returns a reference to the panel for editing the properties of the
-     * color bar axis.
-     *
-     * @return A reference to a panel.
-     */
-    public DefaultAxisEditor getColorBarAxisPropertyEditPanel() {
-        return this.colorBarAxisPropertyPanel;
-    }
-
-    public PlotOrientation getPlotOrientation() {
-        return plotOrientation;
-    }
-
-    public Boolean getDrawLines() {
-        return drawLines;
-    }
-
-    public Boolean getDrawShapes() {
-        return drawShapes;
-    }
-
-    /**
      * Handles user actions generated within the panel.
      * @param event     the event
      */
@@ -620,24 +597,24 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
             }
         }
 
-        if (this.getPlotOrientation() != null) {
+        if (this.plotOrientation != null) {
             if (plot instanceof CategoryPlot) {
                 CategoryPlot p = (CategoryPlot) plot;
-                p.setOrientation(this.getPlotOrientation());
+                p.setOrientation(this.plotOrientation);
             }
             else if (plot instanceof XYPlot) {
                 XYPlot p = (XYPlot) plot;
-                p.setOrientation(this.getPlotOrientation());
+                p.setOrientation(this.plotOrientation);
             }
         }
 
-        if (this.getDrawLines() != null) {
+        if (this.drawLines != null) {
             if (plot instanceof CategoryPlot) {
                 CategoryPlot p = (CategoryPlot) plot;
                 CategoryItemRenderer r = p.getRenderer();
                 if (r instanceof LineAndShapeRenderer) {
                     ((LineAndShapeRenderer) r).setLinesVisible(
-                            this.getDrawLines().booleanValue());
+                            this.drawLines.booleanValue());
                 }
             }
             else if (plot instanceof XYPlot) {
@@ -645,18 +622,18 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
                 XYItemRenderer r = p.getRenderer();
                 if (r instanceof StandardXYItemRenderer) {
                     ((StandardXYItemRenderer) r).setPlotLines(
-                            this.getDrawLines().booleanValue());
+                            this.drawLines.booleanValue());
                 }
             }
         }
 
-        if (this.getDrawShapes() != null) {
+        if (this.drawShapes != null) {
             if (plot instanceof CategoryPlot) {
                 CategoryPlot p = (CategoryPlot) plot;
                 CategoryItemRenderer r = p.getRenderer();
                 if (r instanceof LineAndShapeRenderer) {
                     ((LineAndShapeRenderer) r).setShapesVisible(
-                            this.getDrawShapes().booleanValue());
+                            this.drawShapes.booleanValue());
                 }
             }
             else if (plot instanceof XYPlot) {
@@ -664,20 +641,20 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
                 XYItemRenderer r = p.getRenderer();
                 if (r instanceof StandardXYItemRenderer) {
                     ((StandardXYItemRenderer) r).setBaseShapesVisible(
-                            this.getDrawShapes().booleanValue());
+                        this.drawShapes.booleanValue());
                 }
             }
         }
 
 //dmo: added this panel for colorbar control. (start dmo additions)
-        if (this.getColorBarAxisPropertyEditPanel() != null) {
+        if (this.colorBarAxisPropertyPanel != null) {
             ColorBar colorBar = null;
             if (plot instanceof  ContourPlot) {
                 ContourPlot p = (ContourPlot) plot;
                 colorBar = p.getColorBar();
             }
             if (colorBar != null) {
-                ((DefaultColorBarEditor) getColorBarAxisPropertyEditPanel()).setAxisProperties(colorBar);
+                this.colorBarAxisPropertyPanel.setAxisProperties(colorBar);
             }
         }
 //dmo: (end dmo additions)
