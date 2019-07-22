@@ -1246,6 +1246,15 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
         fireChangeEvent();
     }
 
+
+    public Map<Integer, ValueAxis> getDomainAxes() {
+        return domainAxes;
+    }
+
+    public Map<Integer, ValueAxis> getRangeAxes() {
+        return rangeAxes;
+    }
+
     /**
      * Configures the range axes.
      *

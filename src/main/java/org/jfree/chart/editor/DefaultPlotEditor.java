@@ -53,6 +53,8 @@ import java.awt.Paint;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
@@ -105,14 +107,14 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
     private PaintSample outlinePaintSample;
 
     /**
-     * A panel used to display/edit the properties of the domain axis (if any).
+     * Panels used to display/edit the properties of the domain axis (if any).
      */
-    private DefaultAxisEditor domainAxisPropertyPanel;
+    private Map domainAxisPropertyPanels = new HashMap();
 
     /**
-     * A panel used to display/edit the properties of the range axis (if any).
+     * Panels used to display/edit the properties of the range axis (if any).
      */
-    private DefaultAxisEditor rangeAxisPropertyPanel;
+    private Map rangeAxisPropertyPanels = new HashMap();
 
     /**
      * A panel used to display/edit the properties of the colorbar axis (if
@@ -321,61 +323,63 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
         return panel;
     }
 
-    protected JTabbedPane createPlotTabs(Plot plot)
-    {
+    protected JTabbedPane createPlotTabs(Plot plot) {
         JTabbedPane tabs = new JTabbedPane();
         tabs.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
-        Axis domainAxis = null;
+        final Map domainAxes;
         if (plot instanceof CategoryPlot) {
-            domainAxis = ((CategoryPlot) plot).getDomainAxis();
-        }
-        else if (plot instanceof XYPlot) {
-            domainAxis = ((XYPlot) plot).getDomainAxis();
-        }
-        this.domainAxisPropertyPanel = DefaultAxisEditor.getInstance(
-                domainAxis);
-        if (this.domainAxisPropertyPanel != null) {
-            this.domainAxisPropertyPanel.setBorder(
-                    BorderFactory.createEmptyBorder(2, 2, 2, 2));
-            tabs.add(localizationResources.getString("Domain_Axis"),
-                    this.domainAxisPropertyPanel);
+            domainAxes = ((CategoryPlot) plot).getDomainAxes();
+        } else if (plot instanceof XYPlot) {
+            domainAxes = ((XYPlot) plot).getDomainAxes();
+        } else {
+            domainAxes = new HashMap();
         }
 
-        Axis rangeAxis = null;
+        for(final Object entry : domainAxes.entrySet()) {
+            final Map.Entry<Integer, ? extends Axis> domainAxisEntry = (Map.Entry<Integer, ? extends Axis>) entry;
+            final DefaultAxisEditor domainAxisPropertyPanel = DefaultAxisEditor.getInstance(domainAxisEntry.getValue());
+
+            if (domainAxisPropertyPanel != null) {
+                domainAxisPropertyPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+                tabs.add(localizationResources.getString("Domain_Axis") + (domainAxisEntry.getKey() == 0 ? "" : domainAxisEntry.getKey()), domainAxisPropertyPanel);
+                domainAxisPropertyPanels.put(domainAxisEntry.getKey(), domainAxisPropertyPanel);
+            }
+        }
+
+
+        final Map rangeAxes;
         if (plot instanceof CategoryPlot) {
-            rangeAxis = ((CategoryPlot) plot).getRangeAxis();
-        }
-        else if (plot instanceof XYPlot) {
-            rangeAxis = ((XYPlot) plot).getRangeAxis();
-        }
-        else if (plot instanceof PolarPlot) {
-            rangeAxis = ((PolarPlot) plot).getAxis();
-        }
-
-        this.rangeAxisPropertyPanel = DefaultAxisEditor.getInstance(rangeAxis);
-        if (this.rangeAxisPropertyPanel != null) {
-            this.rangeAxisPropertyPanel.setBorder(
-                    BorderFactory.createEmptyBorder(2, 2, 2, 2));
-            tabs.add(localizationResources.getString("Range_Axis"),
-                    this.rangeAxisPropertyPanel);
+            rangeAxes = ((CategoryPlot)plot).getRangeAxes();
+        } else if (plot instanceof XYPlot) {
+            rangeAxes = ((XYPlot)plot).getRangeAxes();
+        } else if (plot instanceof PolarPlot) {
+            rangeAxes = new HashMap();
+            rangeAxes.put(0, ((PolarPlot)plot).getAxis());
+        } else {
+            throw new UnsupportedOperationException("Plot type " + plot.getPlotType() + " not supported yet");
         }
 
-//dmo: added this panel for colorbar control. (start dmo additions)
+        for(final Object entry : rangeAxes.entrySet()) {
+            final Map.Entry<Integer, ? extends Axis> rangeAxisEntry= (Map.Entry<Integer, ? extends Axis>) entry;
+            final DefaultAxisEditor rangeAxisPropertyPanel = DefaultAxisEditor.getInstance(rangeAxisEntry.getValue());
+            if (rangeAxisPropertyPanel != null) {
+                rangeAxisPropertyPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+                tabs.add(localizationResources.getString("Range_Axis") + (rangeAxisEntry.getKey() == 0 ? "" : rangeAxisEntry.getKey()), rangeAxisPropertyPanel);
+                rangeAxisPropertyPanels.put(rangeAxisEntry.getKey(), rangeAxisPropertyPanel);
+            }
+        }
+
         ColorBar colorBar = null;
         if (plot instanceof ContourPlot) {
-            colorBar = ((ContourPlot) plot).getColorBar();
+            colorBar = ((ContourPlot)plot).getColorBar();
         }
 
-        this.colorBarAxisPropertyPanel = DefaultColorBarEditor.getInstance(
-                colorBar);
+        this.colorBarAxisPropertyPanel = DefaultColorBarEditor.getInstance(colorBar);
         if (this.colorBarAxisPropertyPanel != null) {
-            this.colorBarAxisPropertyPanel.setBorder(
-                    BorderFactory.createEmptyBorder(2, 2, 2, 2));
-            tabs.add(localizationResources.getString("Color_Bar"),
-                    this.colorBarAxisPropertyPanel);
+            this.colorBarAxisPropertyPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+            tabs.add(localizationResources.getString("Color_Bar"), this.colorBarAxisPropertyPanel);
         }
-//dmo: (end dmo additions)
 
         return tabs;
     }
@@ -417,26 +421,6 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
      */
     public Paint getOutlinePaint() {
         return this.outlinePaintSample.getPaint();
-    }
-
-    /**
-     * Returns a reference to the panel for editing the properties of the
-     * domain axis.
-     *
-     * @return A reference to a panel.
-     */
-    public DefaultAxisEditor getDomainAxisPropertyEditPanel() {
-        return this.domainAxisPropertyPanel;
-    }
-
-    /**
-     * Returns a reference to the panel for editing the properties of the
-     * range axis.
-     *
-     * @return A reference to a panel.
-     */
-    public DefaultAxisEditor getRangeAxisPropertyEditPanel() {
-        return this.rangeAxisPropertyPanel;
     }
 
     /**
@@ -575,37 +559,41 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
         plot.setInsets(getPlotInsets());
 
         // then the axis properties...
-        if (this.domainAxisPropertyPanel != null) {
+        for(final Object entry : domainAxisPropertyPanels.entrySet()) {
+            final Map.Entry<Integer, DefaultAxisEditor> domainAxisEntry = (Map.Entry<Integer, DefaultAxisEditor>) entry;
             Axis domainAxis = null;
             if (plot instanceof CategoryPlot) {
                 CategoryPlot p = (CategoryPlot) plot;
-                domainAxis = p.getDomainAxis();
+                domainAxis = p.getDomainAxis(domainAxisEntry.getKey());
             }
             else if (plot instanceof XYPlot) {
                 XYPlot p = (XYPlot) plot;
-                domainAxis = p.getDomainAxis();
+                domainAxis = p.getDomainAxis(domainAxisEntry.getKey());
             }
+
             if (domainAxis != null) {
-                this.domainAxisPropertyPanel.setAxisProperties(domainAxis);
+                domainAxisEntry.getValue().setAxisProperties(domainAxis);
             }
         }
 
-        if (this.rangeAxisPropertyPanel != null) {
+        for(final Object entry : rangeAxisPropertyPanels.entrySet()) {
+            final Map.Entry<Integer, DefaultAxisEditor> rangeAxisEntry= (Map.Entry<Integer, DefaultAxisEditor>) entry;
             Axis rangeAxis = null;
             if (plot instanceof CategoryPlot) {
                 CategoryPlot p = (CategoryPlot) plot;
-                rangeAxis = p.getRangeAxis();
+                rangeAxis = p.getRangeAxis(rangeAxisEntry.getKey());
             }
             else if (plot instanceof XYPlot) {
                 XYPlot p = (XYPlot) plot;
-                rangeAxis = p.getRangeAxis();
+                rangeAxis = p.getRangeAxis(rangeAxisEntry.getKey());
             }
             else if (plot instanceof PolarPlot) {
                 PolarPlot p = (PolarPlot) plot;
-                rangeAxis = p.getAxis();
+                rangeAxis = p.getAxis(rangeAxisEntry.getKey());
             }
+
             if (rangeAxis != null) {
-                this.rangeAxisPropertyPanel.setAxisProperties(rangeAxis);
+                rangeAxisEntry.getValue().setAxisProperties(rangeAxis);
             }
         }
 

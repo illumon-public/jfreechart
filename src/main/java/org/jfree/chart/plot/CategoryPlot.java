@@ -4286,6 +4286,14 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
         return result;
     }
 
+    public Map<Integer, CategoryAxis> getDomainAxes() {
+        return domainAxes;
+    }
+
+    public Map<Integer, ValueAxis> getRangeAxes() {
+        return rangeAxes;
+    }
+
     /**
      * Returns a list of the datasets that are mapped to the axis with the
      * specified index.
