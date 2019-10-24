@@ -9,7 +9,7 @@
     <name>JFreeChart</name>
 
     <artifactId>jfreechart</artifactId>
-    <groupId>org.jfree</groupId>
+    <groupId>io.deephaven.thirdparty</groupId>
     <version>1.0.23</version>
     <packaging>jar</packaging>
 
