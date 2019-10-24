@@ -52,6 +52,7 @@ package org.jfree.chart.entity;
 
 import java.awt.Shape;
 
+import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.data.xy.XYDataset;
 
 /**
@@ -72,6 +73,8 @@ public class XYItemEntity extends ChartEntity {
     /** The item. */
     private int item;
 
+    private XYToolTipGenerator generator;
+
     /**
      * Creates a new entity.
      *
@@ -79,16 +82,17 @@ public class XYItemEntity extends ChartEntity {
      * @param dataset  the dataset.
      * @param series  the series (zero-based index).
      * @param item  the item (zero-based index).
-     * @param toolTipText  the tool tip text.
+     * @param generator an {@link XYToolTipGenerator} to generate on-demand tooltips
      * @param urlText  the URL text for HTML image maps.
      */
     public XYItemEntity(Shape area,
                         XYDataset dataset, int series, int item,
-                        String toolTipText, String urlText) {
-        super(area, toolTipText, urlText);
+                        XYToolTipGenerator generator, String urlText) {
+        super(area, null, urlText);
         this.dataset = dataset;
         this.series = series;
         this.item = item;
+        this.generator = generator;
     }
 
     /**
@@ -146,6 +150,22 @@ public class XYItemEntity extends ChartEntity {
     }
 
     /**
+     * Get the tool tip text.  Note that unlike {@link XYItemEntity} this entity will generate the tool tip text
+     * on demand, unless it has been manually assigned via {@link #setToolTipText(String)}
+     *
+     * @return the tool tip text;
+     */
+    @Override
+    public String getToolTipText() {
+        final String superToolTip = super.getToolTipText();
+        if(superToolTip != null && !superToolTip.isEmpty()) {
+            return superToolTip;
+        }
+
+        return generator == null ? null : generator.generateToolTip(dataset, series, item);
+    }
+
+    /**
      * Tests the entity for equality with an arbitrary object.
      *
      * @param obj  the object ({@code null} permitted).
@@ -181,5 +201,4 @@ public class XYItemEntity extends ChartEntity {
         return "XYItemEntity: series = " + getSeriesIndex() + ", item = "
             + getItem() + ", dataset = " + getDataset();
     }
-
 }

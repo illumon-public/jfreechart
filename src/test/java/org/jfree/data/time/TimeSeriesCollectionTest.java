@@ -309,6 +309,10 @@ public class TimeSeriesCollectionTest {
      */
     @Test
     public void testFindDomainBounds() {
+        // store the current time zone
+        TimeZone saved = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"));
+
         TimeSeriesCollection dataset = new TimeSeriesCollection();
         List visibleSeriesKeys = new java.util.ArrayList();
         Range r = DatasetUtilities.findDomainBounds(dataset, visibleSeriesKeys,
@@ -320,10 +324,6 @@ public class TimeSeriesCollectionTest {
         visibleSeriesKeys.add("S1");
         r = DatasetUtilities.findDomainBounds(dataset, visibleSeriesKeys, true);
         assertNull(r);
-
-        // store the current time zone
-        TimeZone saved = TimeZone.getDefault();
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"));
 
         s1.add(new Year(2008), 8.0);
         r = DatasetUtilities.findDomainBounds(dataset, visibleSeriesKeys, true);

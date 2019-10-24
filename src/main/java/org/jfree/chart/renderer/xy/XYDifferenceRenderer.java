@@ -912,13 +912,7 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
                 l_entityArea = new Rectangle2D.Double((l_x1 - 2), (l_y1 - 2),
                         4, 4);
             }
-            String l_tip = null;
-            XYToolTipGenerator l_tipGenerator = getToolTipGenerator(x_series,
-                    x_item);
-            if (null != l_tipGenerator) {
-                l_tip = l_tipGenerator.generateToolTip(x_dataset, x_series,
-                        x_item);
-            }
+
             String l_url = null;
             XYURLGenerator l_urlGenerator = getURLGenerator();
             if (null != l_urlGenerator) {
@@ -926,7 +920,7 @@ public class XYDifferenceRenderer extends AbstractXYItemRenderer
                         x_item);
             }
             XYItemEntity l_entity = new XYItemEntity(l_entityArea, x_dataset,
-                    x_series, x_item, l_tip, l_url);
+                    x_series, x_item, getToolTipGenerator(x_series, x_item), l_url);
             l_entities.add(l_entity);
         }
 

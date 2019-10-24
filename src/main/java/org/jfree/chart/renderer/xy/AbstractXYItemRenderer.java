@@ -1794,17 +1794,12 @@ public abstract class AbstractXYItemRenderer extends AbstractRenderer
             double w = r * 2;
             hotspot = new Ellipse2D.Double(entityX - r, entityY - r, w, w);
         }
-        String tip = null;
-        XYToolTipGenerator generator = getToolTipGenerator(series, item);
-        if (generator != null) {
-            tip = generator.generateToolTip(dataset, series, item);
-        }
         String url = null;
         if (getURLGenerator() != null) {
             url = getURLGenerator().generateURL(dataset, series, item);
         }
         XYItemEntity entity = new XYItemEntity(hotspot, dataset, series, item,
-                tip, url);
+                getToolTipGenerator(series, item), url);
         entities.add(entity);
     }
 
