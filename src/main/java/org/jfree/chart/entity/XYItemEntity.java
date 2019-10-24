@@ -162,7 +162,7 @@ public class XYItemEntity extends ChartEntity {
             return superToolTip;
         }
 
-        return generator.generateToolTip(dataset, series, item);
+        return generator == null ? null : generator.generateToolTip(dataset, series, item);
     }
 
     /**
@@ -201,5 +201,4 @@ public class XYItemEntity extends ChartEntity {
         return "XYItemEntity: series = " + getSeriesIndex() + ", item = "
             + getItem() + ", dataset = " + getDataset();
     }
-
 }
