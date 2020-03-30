@@ -318,14 +318,19 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
 
         JTabbedPane tabs = createPlotTabs(plot);
         tabs.add(localizationResources.getString("Appearance"), appearance);
+
+        if (tabs.getTabCount() > 3) {
+            tabs.setTabPlacement(JTabbedPane.LEFT);
+        }
+
         panel.add(tabs);
         
         return panel;
     }
 
     protected JTabbedPane createPlotTabs(Plot plot) {
-        JTabbedPane tabs = new JTabbedPane();
-        tabs.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabs.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
         final Map domainAxes;
         if (plot instanceof CategoryPlot) {

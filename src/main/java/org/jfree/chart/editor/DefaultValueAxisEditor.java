@@ -319,13 +319,18 @@ public class DefaultValueAxisEditor extends DefaultAxisEditor
     }
 
     /**
-     * Does nothing.
+     * Selects the text to simplify user-editing
      *
      * @param event  the event.
      */
     @Override
     public void focusGained(FocusEvent event) {
-        // don't need to do anything
+        if (event.getSource() == this.minimumRangeValue) {
+            this.minimumRangeValue.selectAll();
+        }
+        else if (event.getSource() == this.maximumRangeValue) {
+            this.maximumRangeValue.selectAll();
+        }
     }
 
     /**
@@ -356,6 +361,7 @@ public class DefaultValueAxisEditor extends DefaultAxisEditor
         }
         else {
             this.minimumRangeValue.setEnabled(true);
+            this.minimumRangeValue.requestFocus();
             this.maximumRangeValue.setEnabled(true);
         }
     }

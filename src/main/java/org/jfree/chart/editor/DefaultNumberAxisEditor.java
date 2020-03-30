@@ -128,6 +128,19 @@ public class DefaultNumberAxisEditor extends DefaultValueAxisEditor
         }
     }
 
+    /**
+     * Selects the text to simplify user-editing
+     *
+     * @param event  the event.
+     */
+    @Override
+    public void focusGained(FocusEvent event) {
+        super.focusGained(event);
+        if (event.getSource() == this.manualTickUnit) {
+            this.manualTickUnit.selectAll();
+        }
+    }
+
     @Override
     public void focusLost(FocusEvent event) {
         super.focusLost(event);
@@ -145,6 +158,7 @@ public class DefaultNumberAxisEditor extends DefaultValueAxisEditor
         }
         else {
             this.manualTickUnit.setEnabled(true);
+            this.manualTickUnit.requestFocus();
         }
     }
 
